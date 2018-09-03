@@ -17,10 +17,10 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             //page1
             $table->increments('id');
-            $table->string('cover_img');
-            $table->string('name');
-            $table->timestamp('available_from');
-            $table->timestamp('available_till');
+            $table->string('cover_img')->nullable();
+            $table->string('name')->nullable();
+            $table->timestamp('available_from')->nullable();
+            $table->timestamp('available_till')->nullable();
 
             $table->unsignedInteger('programme_id');
             $table->foreign('programme_id')->references('id')->on('programmes');
@@ -34,20 +34,20 @@ class CreateCoursesTable extends Migration
             $table->unsignedInteger('language_id');
             $table->foreign('language_id')->references('id')->on('languages');
 
-            $table->string('course_keywords');
+            $table->string('course_keywords')->nullable();
 
             $table->unsignedInteger('venue_id');
             $table->foreign('venue_id')->references('id')->on('venues');
             //page2
-            $table->string('why_this_cource');
-            $table->string('why_this_cource_attach_file');
-            $table->string('why_this_cource_attach_video');
-            $table->string('general_information');
-            $table->string('general_information_attach_file');
-            $table->string('general_information_attach_video');
-            $table->string('whats_new');
-            $table->string('whats_new_attach_file');
-            $table->string('whats_new_attach_video');
+            $table->text('why_this_cource');
+            $table->string('why_this_cource_attach_file')->nullable();
+            $table->string('why_this_cource_attach_video')->nullable();
+            $table->text('general_information');
+            $table->string('general_information_attach_file')->nullable();
+            $table->string('general_information_attach_video')->nullable();
+            $table->text('whats_new');
+            $table->string('whats_new_attach_file')->nullable();
+            $table->string('whats_new_attach_video')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
