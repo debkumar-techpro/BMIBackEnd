@@ -31,9 +31,6 @@ class CreateCoursesTable extends Migration
             $table->unsignedInteger('module_id');
             $table->foreign('module_id')->references('id')->on('modules');
 
-            $table->unsignedInteger('title_or_subject_id');
-            $table->foreign('title_or_subject_id')->references('id')->on('title_or_subjects');
-
             $table->unsignedInteger('language_id');
             $table->foreign('language_id')->references('id')->on('languages');
 
