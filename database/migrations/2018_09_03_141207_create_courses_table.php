@@ -22,6 +22,9 @@ class CreateCoursesTable extends Migration
             $table->timestamp('available_from')->nullable();
             $table->timestamp('available_till')->nullable();
 
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+
             $table->unsignedInteger('programme_id');
             $table->foreign('programme_id')->references('id')->on('programmes');
 
