@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMessagesAttachmentsTable extends Migration
+class CreateMessageAttachmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMessagesAttachmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('messages_attachments', function (Blueprint $table) {
+        Schema::create('message_attachments', function (Blueprint $table) {
             $table->increments('id');
 
             $table->unsignedInteger('message_id');
@@ -32,6 +32,6 @@ class CreateMessagesAttachmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages_attachments');
+        Schema::dropIfExists('message_attachments');
     }
 }
