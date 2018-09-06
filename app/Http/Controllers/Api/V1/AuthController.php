@@ -13,22 +13,53 @@ class AuthController extends BaseController
 
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['login', 'register']]);
+        $this->middleware('api.auth', ['except' => ['login', 'register','register_test']]);
     }
 
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|between:3,15',
+            // 'name' => 'required|between:3,15',
             'email' => 'required|email|unique:users|max:255',
-            'password' => 'required|string|min:4'
+            /*'password' => 'required|string|min:4'*/
         ]);
         if ($validator->fails()) {
             return $this->errorValidator(40001, $validator);
         }
         $user = new User();
-        $user->name = $request->input('name');
+        /*$user->name = $request->input('name');*/
         $user->email = $request->input('email');
+        /*$user->password = (new BcryptHasher)->make($request->input('password'));*/
+        $user->password = (new BcryptHasher)->make('123456');
+        $user->save();
+        $token = Auth::guard('api')->fromUser($user);
+        return $this->respondWithToken($token);
+    }
+
+    public function register_test(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|between:3,15',
+            'email'    => 'required|email|unique:users|max:255',
+            'password' => 'required|string|min:4',
+        ]);
+        if ($validator->fails()) {
+            return $this->errorValidator(40001, $validator);
+        }
+        /**/
+        $objDemo           = new \stdClass();
+        $objDemo->demo_one = 'Demo One Value';
+        $objDemo->demo_two = 'Demo Two Value';
+        $objDemo->sender   = 'SenderUserName';
+        $objDemo->receiver = 'ReceiverUserName';
+
+        //Mail::to("debkumar.daschakraborty@techprostudio.com")->send(new DemoEmail($objDemo));
+        return response()->json(Mail::to("debkumar.daschakraborty@techprostudio.com")->send(new DemoEmail($objDemo)));
+        exit();
+        /**/
+        $user           = new User();
+        $user->name     = $request->input('name');
+        $user->email    = $request->input('email');
         $user->password = (new BcryptHasher)->make($request->input('password'));
         $user->save();
         $token = Auth::guard('api')->fromUser($user);

@@ -62,9 +62,10 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+   // App\Http\Middleware\ExampleMiddleware::class
+    'Nord\Lumen\Cors\CorsMiddleware',
+]);
 
 $app->routeMiddleware([
     'cors' => App\Http\Middleware\CorsMiddleware::class,
@@ -81,7 +82,7 @@ $app->routeMiddleware([
 | totally optional, so you are not required to uncomment this line.
 |
 */
-
+$app->register('Nord\Lumen\Cors\CorsServiceProvider');
 // dingo
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 // jwt
@@ -90,6 +91,8 @@ $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
+
+$app->register(\Illuminate\Mail\MailServiceProvider::class);
 
 app('Dingo\Api\Auth\Auth')->extend('jwt', function ($app) {
     return new Dingo\Api\Auth\Provider\JWT($app['Tymon\JWTAuth\JWTAuth']);
@@ -112,5 +115,8 @@ $app->router->group([
     require __DIR__ . '/../routes/web.php';
     require __DIR__ . '/../routes/api.php';
 });
+
+$app->configure('services');
+$app->configure('mail');
 
 return $app;

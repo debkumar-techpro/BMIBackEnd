@@ -7,7 +7,7 @@ $api = app('Dingo\Api\Routing\Router');
 // header  Accept:application/vnd.lumen.v1+json
 $api->version('v1', [
     'namespace' => 'App\Http\Controllers\Api\V1',
-    'middleware' => ['cors']
+    'middleware' => []
 ], function ($api) {
     // test
     $api->get('test', 'TestController@test');
@@ -19,6 +19,10 @@ $api->version('v1', [
         $api->post('register', [
             'as' => 'authorize.register',
             'uses' => 'AuthController@register',
+        ]);
+        $api->post('register_test', [
+            'as' => 'authorize.register_test',
+            'uses' => 'AuthController@register_test',
         ]);
 
         // login
