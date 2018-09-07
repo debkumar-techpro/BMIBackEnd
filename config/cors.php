@@ -21,7 +21,7 @@ return [
     |
     */
 
-    'allow_origins' => ['*'],
+    'allow_origins' => ['http://192.168.1.103:4200', 'http://localhost:4200'],
 
     /*
     |--------------------------------------------------------------------------
@@ -43,7 +43,7 @@ return [
     |
     */
 
-    'allow_methods' => ['HEAD,GET,POST,PUT,PATCH,DELETE,OPTIONS'],
+    'allow_methods' => ['HEAD','GET','POST','PUT','PATCH','DELETE','OPTIONS'],
 
     /*
     |--------------------------------------------------------------------------
