@@ -34,8 +34,6 @@ class DemoEmail extends Mailable
      */
     public function build()
     {
-        echo "string";
-        exit();
         /*return $this->from('debkumar.daschakraborty@cingant.com')
             ->view('mails.demo')
             ->text('mails.demo_plain')
@@ -48,12 +46,8 @@ class DemoEmail extends Mailable
                 'as'   => 'demo.jpg',
                 'mime' => 'image/jpeg',
             ]);*/
-            /*return $this->from('debkumar.daschakraborty@cingant.com')
+            return $this->from('debkumar.daschakraborty@cingant.com')
             ->view('mails.demo')
-            ->with(
-                [
-                    'testVarOne' => '1',
-                    'testVarTwo' => '2',
-                ]);*/
+            ->text('mails.demo_plain');
     }
 }

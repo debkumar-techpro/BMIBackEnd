@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Mail\DemoEmail;
 use App\Models\User;
 use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends BaseController
@@ -13,7 +15,7 @@ class AuthController extends BaseController
 
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['login', 'register','register_test']]);
+        $this->middleware('api.auth', ['except' => ['login', 'register', 'register_test']]);
     }
 
     public function register(Request $request)
@@ -38,21 +40,20 @@ class AuthController extends BaseController
 
     public function register_test(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name'     => 'required|between:3,15',
-            'email'    => 'required|email|unique:users|max:255',
-            'password' => 'required|string|min:4',
-        ]);
-        if ($validator->fails()) {
-            return $this->errorValidator(40001, $validator);
-        }
+        // $validator = Validator::make($request->all(), [
+        //     'name'     => 'required|between:3,15',
+        //     'email'    => 'required|email|unique:users|max:255',
+        //     'password' => 'required|string|min:4',
+        // ]);
+        // if ($validator->fails()) {
+        //     return $this->errorValidator(40001, $validator);
+        // }
         /**/
         $objDemo           = new \stdClass();
         $objDemo->demo_one = 'Demo One Value';
         $objDemo->demo_two = 'Demo Two Value';
         $objDemo->sender   = 'SenderUserName';
         $objDemo->receiver = 'ReceiverUserName';
-
         //Mail::to("debkumar.daschakraborty@techprostudio.com")->send(new DemoEmail($objDemo));
         return response()->json(Mail::to("debkumar.daschakraborty@techprostudio.com")->send(new DemoEmail($objDemo)));
         exit();
@@ -69,7 +70,7 @@ class AuthController extends BaseController
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
         if ($validator->fails()) {
@@ -96,7 +97,19 @@ class AuthController extends BaseController
 
     public function me()
     {
-        return response()->json(Auth::guard('api')->user());
+        return response()->json(
+            Auth::guard('api')
+                ->user()
+                ->only(
+                    'name',
+                    'type',
+                    'email',
+                    'phone',
+                    'date_of_birth',
+                    'gender',
+                    'address'
+                )
+        );
     }
 
     public function getCurrentToken()
@@ -109,8 +122,9 @@ class AuthController extends BaseController
     {
         return response()->json([
             'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60
+            'token_type'   => 'bearer',
+            'user'         => Auth::guard('api')->user()->only('name', 'type'),
+            'expires_in'   => Auth::guard('api')->factory()->getTTL() * 60,
         ]);
     }
 }
