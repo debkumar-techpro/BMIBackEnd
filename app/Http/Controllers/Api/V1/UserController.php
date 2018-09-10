@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends BaseController
@@ -10,8 +11,15 @@ class UserController extends BaseController
 
     public function __construct()
     {
-        $this->middleware('api.auth');
+       // $this->middleware('api.auth');
     }
+
+    public function index()
+    {
+        $programme = User::paginate(1);
+        return response()->json($programme);
+    }
+
 
     public function show()
     {

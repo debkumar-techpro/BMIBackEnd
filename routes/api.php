@@ -62,9 +62,13 @@ $api->version('v1', [
     ], function ($api) {
         // User
         // my detail
+        // $api->get('user', [
+        //     'as' => 'user.show',
+        //     'uses' => 'UserController@show'
+        // ]);
         $api->get('user', [
-            'as' => 'user.show',
-            'uses' => 'UserController@show'
+            'as' => 'user.index',
+            'uses' => 'UserController@index'
         ]);
         // update info
         $api->patch('user', [
@@ -79,6 +83,13 @@ $api->version('v1', [
 
         // RESTful
         $api->resource('/post', 'PostController');
+        $api->resource('/programme', 'ProgrammeController');
+
+        //store_file
+        $api->post('programme/files', [
+            'as' => 'programme.store_file',
+            'uses' => 'ProgrammeController@store_file'
+        ]);
     });
 
 });
