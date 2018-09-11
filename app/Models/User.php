@@ -9,7 +9,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 class User extends Model implements AuthenticatableContract, JWTSubject
 {
-    // 用户验证attempt
+    // attempt
     use Authenticatable;
 
     /**
@@ -37,7 +37,7 @@ class User extends Model implements AuthenticatableContract, JWTSubject
         return $this->getKey();
     }
 
-    // jwt 一些自定义的参数
+    // jwt 一
     public function getJWTCustomClaims()
     {
         return [];
@@ -49,5 +49,9 @@ class User extends Model implements AuthenticatableContract, JWTSubject
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+    public function courseParticipant($value='')
+    {
+        return $this->hasOne(CourseParticipant::class, 'user_id');
     }
 }

@@ -84,11 +84,28 @@ $api->version('v1', [
         // RESTful
         $api->resource('/post', 'PostController');
         $api->resource('/programme', 'ProgrammeController');
-
+        $api->resource('/programme-participant', 'ProgrammeParticipantController');
+        $api->resource('/programme-classformat', 'ProgrammeClassFormatController');
         //store_file
+        $api->get('programme/classes/{programme_id}', [
+            'as' => 'programme.show-class',
+            'uses' => 'ProgrammeController@show_class'
+        ]);
+        $api->get('programme/modules/{programme_id}/{class_id}', [
+            'as' => 'programme.show-module',
+            'uses' => 'ProgrammeController@show_module'
+        ]);
         $api->post('programme/files', [
-            'as' => 'programme.store_file',
+            'as' => 'programme.store-file',
             'uses' => 'ProgrammeController@store_file'
+        ]);
+        $api->post('programme/classes', [
+            'as' => 'programme.store-class',
+            'uses' => 'ProgrammeController@store_class'
+        ]);
+        $api->delete('programme/files/{files}', [
+            'as' => 'programme.destroy-file',
+            'uses' => 'ProgrammeController@destroy_file'
         ]);
     });
 
