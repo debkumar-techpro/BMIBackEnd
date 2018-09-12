@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\ClassFormat;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
-class ProgrammeClassFormatController extends Controller
+class ProgrammeClassFormatController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,7 @@ class ProgrammeClassFormatController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -25,7 +26,37 @@ class ProgrammeClassFormatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'class_id' => 'required|integer',
+            'days'     => 'required|string',
+            'schedule' => 'required|json',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorValidator(40001, $validator);
+        }
+        try {
+            ClassFormat::updateOrCreate(
+                [
+                    "class_id" => $request->input('class_id'),
+                ],
+                [
+                    "class_id"   => $request->input('class_id'),
+                    "days"       => $request->input('days'),
+                    "schedule"   => $request->input('schedule'),
+                    "created_at" => date('Y-m-d H:i:s'),
+                ]);
+            return response()->json([
+                "message"     => 'Data store successfully inserted',
+                "Participant" => [
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Data not inserted',
+                'error'   => $e->getMessage(),
+            ], 400);
+        }
     }
 
     /**
@@ -34,9 +65,12 @@ class ProgrammeClassFormatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($class_id)
     {
-        //
+        $classFormat = ClassFormat::where(["class_id" => $class_id])->first();
+        return response()->json([
+            "data" => $classFormat
+        ]);
     }
 
     /**

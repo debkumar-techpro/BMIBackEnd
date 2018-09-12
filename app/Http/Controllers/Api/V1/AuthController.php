@@ -123,7 +123,7 @@ class AuthController extends BaseController
         return response()->json([
             'access_token' => $token,
             'token_type'   => 'bearer',
-            'user'         => Auth::guard('api')->user()->only('name', 'type'),
+            'user'         => Auth::guard('api')->user()->only('type'),
             'expires_in'   => Auth::guard('api')->factory()->getTTL() * 60,
         ]);
     }

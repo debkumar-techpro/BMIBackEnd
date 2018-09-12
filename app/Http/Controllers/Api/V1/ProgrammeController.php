@@ -85,6 +85,7 @@ class ProgrammeController extends BaseController
             'unique_id' => 'required|string',
             'link'      => 'nullable|string',
             'img'       => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'type'      => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -98,7 +99,8 @@ class ProgrammeController extends BaseController
             }
             $programmeUpload            = new ProgrammeUpload();
             $programmeUpload->unique_id = $request->input('unique_id');
-            $programmeUpload->name      = $request->input('link');
+            $programmeUpload->link      = $request->input('link');
+            $programmeUpload->type      = $request->input('type');
             $programmeUpload->name      = $file_name;
             $programmeUpload->save();
 
@@ -124,6 +126,9 @@ class ProgrammeController extends BaseController
             'year'         => 'required|integer',
             'name'         => 'nullable|string',
             'programme_id' => 'required|integer',
+            'start_date'   => 'required',
+            'end_date'     => 'required',
+
         ]);
 
         if ($validator->fails()) {
@@ -134,6 +139,8 @@ class ProgrammeController extends BaseController
             $classes->year         = $request->input('year');
             $classes->name         = $request->input('name');
             $classes->programme_id = $request->input('programme_id');
+            $classes->start_date   = $request->input('start_date');
+            $classes->end_date     = $request->input('end_date');
             $classes->save();
 
             return response()->json([
@@ -185,7 +192,7 @@ class ProgrammeController extends BaseController
         ];
         $validator = Validator::make($data, [
             'programme_id' => 'required|integer',
-            'class_id' => 'required|integer',
+            'class_id'     => 'required|integer',
         ]);
 
         if ($validator->fails()) {
