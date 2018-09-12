@@ -58,7 +58,7 @@ $api->version('v1', [
 
     // need authentication
     $api->group([
-        'middleware' => 'api.auth',
+        // 'middleware' => 'api.auth',
     ], function ($api) {
         // RESTful API
         $api->resource('/post', 'PostController', [
@@ -111,6 +111,16 @@ $api->version('v1', [
         $api->get('programme/modules/{programme_id}/{class_id}', [
             'as'   => 'programme.show-module',
             'uses' => 'ProgrammeController@show_module',
+        ]);
+        // Show student under a programme
+        $api->get('student/classes/{programme_id}/{class_id}', [
+            'as'   => 'student.show-student',
+            'uses' => 'StudentController@show_by_class',
+        ]);
+        // Show teacher under a programme
+        $api->get('teacher/classes/{programme_id}/{class_id}', [
+            'as'   => 'teacher.show-teacher',
+            'uses' => 'TeacherController@show_by_class',
         ]);
         // Store file under a programme create
         $api->post('programme/files', [
