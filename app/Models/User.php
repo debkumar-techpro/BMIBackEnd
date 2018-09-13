@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
 class User extends Model implements AuthenticatableContract, JWTSubject
 {
@@ -27,9 +27,8 @@ class User extends Model implements AuthenticatableContract, JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'deleted_at'
+        'password', 'deleted_at',
     ];
-
 
     // jwt
     public function getJWTIdentifier()
@@ -50,7 +49,7 @@ class User extends Model implements AuthenticatableContract, JWTSubject
     {
         return $this->hasMany(Post::class);
     }
-    public function courseParticipant($value='')
+    public function courseParticipant($value = '')
     {
         return $this->hasOne(CourseParticipant::class, 'user_id');
     }

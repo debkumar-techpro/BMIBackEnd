@@ -91,6 +91,12 @@ $api->version('v1', [
             'only' => [
             ],
         ]);
+        $api->resource('/module', 'ModuleController', [
+            'only' => [
+                'show',
+                'update'
+            ],
+        ]);
 
         // Custom RESTful API
         // My Details
@@ -113,12 +119,12 @@ $api->version('v1', [
             'uses' => 'ProgrammeController@show_module',
         ]);
         // Show student under a programme
-        $api->get('student/classes/{programme_id}/{class_id}', [
+        $api->get('student/classes/{class_id}', [
             'as'   => 'student.show-student',
             'uses' => 'StudentController@show_by_class',
         ]);
         // Show teacher under a programme
-        $api->get('teacher/classes/{programme_id}/{class_id}', [
+        $api->get('teacher/classes/{class_id}', [
             'as'   => 'teacher.show-teacher',
             'uses' => 'TeacherController@show_by_class',
         ]);

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\CourseParticipant;
+use App\Models\Module;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class StudentController extends BaseController
+class ModuleController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -36,21 +37,8 @@ class StudentController extends BaseController
      */
     public function show($id)
     {
-        //
-    }
-    public function show_by_class($class_id)
-    {
-        $courseParticipant = CourseParticipant::select('*')
-            ->with(['course' => function ($query) {
-                $query->select('id');
-            }, 'user' => function ($query) {
-            }])
-            ->whereHas('course', function ($query) use ($class_id) {
-                $query->where(['class_id' => $class_id]);
-            })
-            ->groupby('user_id')
-            ->get();
-        return response()->json($courseParticipant);
+        $module = Module::find($id);
+        return response()->json($module);
     }
 
     /**
@@ -62,7 +50,31 @@ class StudentController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name'        => 'required|string',
+            'description' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorValidator(40001, $validator);
+        }
+        try {
+            $classes              = Module::find($id);
+            $classes->name        = $request->input('name');
+            $classes->description = $request->input('description');
+            $classes->save();
+
+            return response()->json([
+                "message" => 'Data store successfully inserted',
+                "year"    => $classes,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Data not inserted',
+                'error'   => $e->getMessage(),
+            ], 400);
+        }
     }
 
     /**
